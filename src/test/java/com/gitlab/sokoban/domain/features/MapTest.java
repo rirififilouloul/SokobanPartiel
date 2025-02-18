@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MapTest {
-
     private Map map;
 
     @BeforeEach
@@ -45,8 +44,8 @@ public class MapTest {
     public void isEqualMapTest() {
         Map map2 = new Map();
 
-        for (int i = 0; i < map.tiles.size(); i++) {
-            assertTrue(map.tiles.get(i).isEquals(map2.tiles.get(i)));
+        for (int i = 0; i < map.getTiles().size(); i++) {
+            assertTrue(map.getTiles().get(i).isEquals(map2.getTiles().get(i)));
         }
     }
 }
