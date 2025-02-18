@@ -38,4 +38,8 @@ public class Map {
         }
         return false;
     }
+
+    public List<Tile> getTiles() {
+        return tiles;
+    }
 }
