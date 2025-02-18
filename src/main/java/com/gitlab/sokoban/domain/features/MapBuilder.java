@@ -70,7 +70,7 @@ public class MapBuilder {
 
     public static ArrayList<Tile> toTiles(String row){
 
-        int Ypos = Integer.parseInt(row.substring(0, 1));
+        int Ypos = Integer.parseInt(row.substring(1, 2));
 
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 1 ; i < row.length(); i++){

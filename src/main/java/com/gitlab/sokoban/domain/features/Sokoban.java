@@ -5,6 +5,7 @@ import com.gitlab.sokoban.domain.model.Size;
 import com.gitlab.sokoban.domain.model.State;
 import com.gitlab.sokoban.domain.model.Tile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.gitlab.sokoban.domain.model.State.*;
@@ -16,6 +17,14 @@ public class Sokoban {
     private static Map map;
     private static ArrayList<Tile> storages;
 //    private static box[] boxes;
+
+    public Sokoban() throws IOException {
+        playerPosition = new Position(1, 1);
+        MapBuilder mapbd = new MapBuilder();
+        map = mapbd.build("src/main/resources/static/map.txt");
+        storages = getTiles(Storage);
+
+    }
 
 
     public static ArrayList<Tile> getTiles(State state) {
