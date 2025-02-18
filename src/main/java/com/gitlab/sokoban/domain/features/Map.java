@@ -17,11 +17,12 @@ import com.gitlab.sokoban.domain.model.Position;
 import com.gitlab.sokoban.domain.model.State;
 import com.gitlab.sokoban.domain.model.Tile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Map {
-    List<Tile> tiles;
 
+    ArrayList<Tile> tiles;
 
     public Map() {
 
@@ -38,7 +39,7 @@ public class Map {
     }
 
     // retourne True si la position donnée est dans la carte. Faux, sinon.
-    public Boolean inside(int x, int y) {
+    public Boolean inside(Position position) {
         for (int i = 0; i < tiles.size(); i++) {
             if (tiles.get(i).position().isEquals(position)) {
                 return true;
