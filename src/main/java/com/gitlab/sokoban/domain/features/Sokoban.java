@@ -1,20 +1,24 @@
 package com.gitlab.sokoban.domain.features;
 
+import com.gitlab.sokoban.domain.model.Position;
 import com.gitlab.sokoban.domain.model.State;
 import com.gitlab.sokoban.domain.model.Tile;
 
 import java.util.ArrayList;
 
+import static com.gitlab.sokoban.domain.features.Direction.Left;
+import static com.gitlab.sokoban.domain.model.State.*;
+
 public class Sokoban {
 
 
-//    private static Player player;
+    private static Position playerPosition;
     private static Map map;
     private static ArrayList<Tile> storages;
+//    private static box[] boxes;
 
 
-
-    public ArrayList<Tile> getTiles(State state){
+    public static ArrayList<Tile> getTiles(State state) {
         // map type :   private Tile[][];
         ArrayList<Tile> tiles = new ArrayList<>();
         for (int i = 0; i < map.getTiles().length; i++) {
@@ -28,128 +32,74 @@ public class Sokoban {
     }
 
 
-//    private static box[] boxes;
-//
-//    public static void move(player.Direction){
-//        switch(player.Direction){
-//            case Left:
-//                playerPosition = player.getPosition();
-//                nextTile = map.getTile(playerPosition.x - 1, playerPosition.y);
-//                switch(nextTile){
-//                    case Wall:
-//                        break;
-//                    case Box:
-//                        nextTile = map.getTile(playerPosition.x - 1, playerPosition.y);
-//                        switch(nextTile){
-//                            case Wall:
-//                                break;
-//                            case Box:
-//                                break;
-//                            case Empty:
-//                                map[playerPosition.x -1] = Tile.empty;
-//                                map[playerPosition.x-2] = Tile.box;
-//                                map[playerPosition] = Tile.empty;
-//                                playerPosition.x = playerPosition.x - 1;
-//                                map[playerPosition] = Tile.player;
-//                                break;
-//                        }
-//                        break;
-//                    case Empty:
-//                        map[playerPosition] = Tile.empty;
-//                        playerPosition.x = playerPosition.x - 1;
-//                        map[playerPosition] = Tile.player;
-//                        break;
-//                }
-//                break;
-//            case Down:
-//                playerPosition = player.getPosition();
-//                nextTile = map.getTile(playerPosition.x, playerPosition.y-1);
-//                switch(nextTile){
-//                    case Wall:
-//                        break;
-//                    case Box:
-//                        nextTile = map.getTile(playerPosition.x, playerPosition.y+2);
-//                        switch(nextTile){
-//                            case Wall:
-//                                break;
-//                            case Box:
-//                                break;
-//                            case Empty:
-//                                map[playerPosition.y +1] = Tile.empty;
-//                                map[playerPosition.y+2] = Tile.box;
-//                                map[playerPosition] = Tile.empty;
-//                                playerPosition.y = playerPosition.y + 1;
-//                                map[playerPosition] = Tile.player;
-//                                break;
-//                        }
-//                        break;
-//                    case Empty:
-//                        map[playerPosition] = Tile.empty;
-//                        playerPosition.y = playerPosition.y + 1;
-//                        map[playerPosition] = Tile.player;
-//                        break;
-//                }
-//                break;
-//            case Right:
-//                playerPosition = player.getPosition();
-//                nextTile = map.getTile(playerPosition.x + 1, playerPosition.y);
-//                switch(nextTile){
-//                    case Wall:
-//                        break;
-//                    case Box:
-//                        nextTile = map.getTile(playerPosition.x + 2, playerPosition.y);
-//                        switch(nextTile){
-//                            case Wall:
-//                                break;
-//                            case Box:
-//                                break;
-//                            case Empty:
-//                                map[playerPosition.x +1] = Tile.empty;
-//                                map[playerPosition.x+2] = Tile.box;
-//                                map[playerPosition] = Tile.empty;
-//                                playerPosition.x = playerPosition.x + 1;
-//                                map[playerPosition] = Tile.player;
-//                                break;
-//                        }
-//                        break;
-//                    case Empty:
-//                        map[playerPosition] = Tile.empty;
-//                        playerPosition.x = playerPosition.x + 1;
-//                        map[playerPosition] = Tile.player;
-//                        break;
-//                }
-//                break;
-//            case Up:
-//                playerPosition = player.getPosition();
-//                nextTile = map.getTile(playerPosition.x, playerPosition.y-1);
-//                switch(nextTile){
-//                    case Wall:
-//                        break;
-//                    case Box:
-//                        nextTile = map.getTile(playerPosition.x, playerPosition.y-2);
-//                        switch(nextTile){
-//                            case Wall:
-//                                break;
-//                            case Box:
-//                                break;
-//                            case Empty:
-//                                map[playerPosition.y -1] = Tile.empty;
-//                                map[playerPosition.y-2] = Tile.box;
-//                                map[playerPosition] = Tile.empty;
-//                                playerPosition.y = playerPosition.y - 1;
-//                                map[playerPosition] = Tile.player;
-//                                break;
-//                        }
-//                        break;
-//                    case Empty:
-//                        map[playerPosition] = Tile.empty;
-//                        playerPosition.x = playerPosition.y - 1;
-//                        map[playerPosition] = Tile.player;
-//                        break;
-//                }
-//                break;
-//        }
-//    }
+    public static Tile getTile(int x, int y) {
+        return map.getTiles()[y][x];
+    }
 
 
+    public static void move(Direction direction) {
+
+        Tile nextTile;
+        switch (direction) {
+            case Left:
+                nextTile = getTile(playerPosition.x - 1, playerPosition.y);
+                break;
+
+            case Down:
+                nextTile = getTile(playerPosition.x, playerPosition.y - 1);
+                break;
+
+            case Right:
+                nextTile = getTile(playerPosition.x + 1, playerPosition.y);
+                break;
+
+            case Up:
+                nextTile = getTile(playerPosition.x, playerPosition.y + 1);
+                break;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + direction);
+        }
+
+        if (nextTile.state() == Wall) {
+            return;
+        }
+
+        if (nextTile.state() == Box) {
+            Tile nextTile2;
+            switch (direction) {
+                case Left:
+                    nextTile2 = getTile(playerPosition.x - 2, playerPosition.y);
+                    break;
+
+                case Down:
+                    nextTile2 = getTile(playerPosition.x, playerPosition.y - 2);
+                    break;
+
+                case Right:
+                    nextTile2 = getTile(playerPosition.x + 2, playerPosition.y);
+                    break;
+
+                case Up:
+                    nextTile2 = getTile(playerPosition.x, playerPosition.y + 2);
+                    break;
+
+                default:
+                    throw new IllegalStateException("Unexpected value: " + direction);
+            }
+
+            if (nextTile2.state() == Wall || nextTile2.state() == Box) {
+                return;
+            }
+
+            nextTile2.setState(Box);
+            nextTile.setState(Player);
+            playerPosition = new Position(playerPosition.x, playerPosition.y);
+        } else {
+            nextTile.setState(Player);
+            playerPosition = new Position(playerPosition.x, playerPosition.y);
+        }
+
+
+    }
 }
