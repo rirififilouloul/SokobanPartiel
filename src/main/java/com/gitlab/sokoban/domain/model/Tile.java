@@ -9,6 +9,11 @@ public class Tile {
         this.state = state;
     }
 
+    public Tile(Position position) {
+        this.position = position;
+        this.state = State.Empty;
+    }
+
     public Position position() {
         return position;
     }
