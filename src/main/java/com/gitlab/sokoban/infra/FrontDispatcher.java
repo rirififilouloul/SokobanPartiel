@@ -1,6 +1,12 @@
 package com.gitlab.sokoban.infra;
 
+import com.gitlab.sokoban.domain.features.Direction;
 import com.gitlab.sokoban.domain.features.Game;
+import com.gitlab.sokoban.domain.features.Sokoban;
+import com.gitlab.sokoban.domain.model.Position;
+import com.gitlab.sokoban.domain.model.Size;
+import com.gitlab.sokoban.domain.model.State;
+import com.gitlab.sokoban.domain.model.Tile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +31,6 @@ public class FrontDispatcher {
 
 
 
-/*
     // NE PAS SUPPRIMER
     static List<List<String>> toDTO(Sokoban sokoban) {
         List<Tile> Tiles = sokoban.getTiles();
@@ -50,7 +55,8 @@ public class FrontDispatcher {
 
     @RequestMapping(path = "", method = RequestMethod.POST)
     String move(@RequestParam(value = "move", required = false) String move, Model model) {
-        game.execute(Direction.valueOf(move));
+        Direction direction = Direction.valueOf(move);
+        game.execute(direction);
         model.addAttribute("Tiles", toDTO(game.current()));
         return "index.html";
     }
@@ -61,10 +67,9 @@ public class FrontDispatcher {
         model.addAttribute("Tiles", toDTO(current));
         return "index.html";
     }
-*/
 
 
-    @RequestMapping(path = "", method = RequestMethod.POST)
+/*    @RequestMapping(path = "", method = RequestMethod.POST)
     String move(@RequestParam(value = "move", required = false) String move, Model model) {
 
         model.addAttribute("Tiles", Arrays.asList(
@@ -75,9 +80,9 @@ public class FrontDispatcher {
 
         ));
         return "index.html";
-    }
+    }*/
 
-    @RequestMapping(path = "", method = RequestMethod.GET)
+/*    @RequestMapping(path = "", method = RequestMethod.GET)
     String index(Model model) {
         model.addAttribute("Tiles", Arrays.asList(
                 Arrays.asList("wall", "wall", "wall", "wall"),
@@ -87,7 +92,7 @@ public class FrontDispatcher {
 
         ));
         return "index.html";
-    }
+    }*/
 }
 
 

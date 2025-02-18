@@ -4,4 +4,6 @@ import com.gitlab.sokoban.domain.livingdoc.Feature;
 
 @Feature
 public class Game {
+
+    public Sokoban
 }

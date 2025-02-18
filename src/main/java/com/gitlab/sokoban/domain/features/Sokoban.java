@@ -1,12 +1,12 @@
 package com.gitlab.sokoban.domain.features;
 
 import com.gitlab.sokoban.domain.model.Position;
+import com.gitlab.sokoban.domain.model.Size;
 import com.gitlab.sokoban.domain.model.State;
 import com.gitlab.sokoban.domain.model.Tile;
 
 import java.util.ArrayList;
 
-import static com.gitlab.sokoban.domain.features.Direction.Left;
 import static com.gitlab.sokoban.domain.model.State.*;
 
 public class Sokoban {
@@ -29,6 +29,11 @@ public class Sokoban {
             }
         }
         return tiles;
+    }
+
+    public static ArrayList<Tile> getTiles() {
+        // map type :   private Tile[][];
+        return storages;
     }
 
 
@@ -99,7 +104,9 @@ public class Sokoban {
             nextTile.setState(Player);
             playerPosition = new Position(playerPosition.x, playerPosition.y);
         }
+    }
 
-
+    public Size getSize() {
+        return map.getSize();
     }
 }

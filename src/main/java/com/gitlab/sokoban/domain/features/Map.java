@@ -5,6 +5,7 @@ Deux cartes sont égales si leur taille et leurs cases sont égales. Créer les 
  */
 
 import com.gitlab.sokoban.domain.model.Position;
+import com.gitlab.sokoban.domain.model.Size;
 import com.gitlab.sokoban.domain.model.State;
 import com.gitlab.sokoban.domain.model.Tile;
 
@@ -14,9 +15,11 @@ import java.util.List;
 public class Map {
 
     private Tile[][] tiles;
+    Size size;
 
     public Map(int width, int height) {
         tiles = new Tile[height][width];
+        size = new Size(width, height);
     }
 
     // retourne True si la position donnée est un mur. Faux, sinon.
@@ -38,5 +41,9 @@ public class Map {
 
     public Tile[][] getTiles() {
         return tiles;
+    }
+
+    public Size getSize() {
+        return size;
     }
 }
