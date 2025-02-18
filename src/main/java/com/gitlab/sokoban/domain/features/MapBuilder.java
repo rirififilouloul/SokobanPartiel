@@ -1,10 +1,15 @@
 package com.gitlab.sokoban.domain.features;
+import com.gitlab.sokoban.domain.model.Position;
 import com.gitlab.sokoban.domain.model.Tile;
+import com.gitlab.sokoban.domain.model.State;
+
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+
 
 /*
 ### 1.3. Le générateur de cartes (4 points)
@@ -43,25 +48,79 @@ Par exemple, le premier '$' est à la position [5;2] (3ème ligne, 6ème caract�
 
 public class MapBuilder {
 
-    public static Tile toTiles(String row){
 
+    public static int getMapWidth(String fileMap) throws IOException {
+        int width = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(fileMap))) {
+            String line = br.readLine();
+            width = line.length();
+        }
+        return width;
+    }
 
+    public static int getMapHeight(String fileMap) throws IOException {
+        int height = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(fileMap))) {
+            while (br.readLine() != null) {
+                height++;
+            }
+        }
+        return height;
+    }
+
+    public static ArrayList<Tile> toTiles(String row){
+
+        int Ypos = Integer.parseInt(row.substring(0, 1));
+
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for (int i = 1 ; i < row.length(); i++){
+            char c = row.charAt(i);
+            Position position = new Position(i-1, Ypos);
+            switch (c){
+                case '#':
+                    tiles.add(new Tile(position, State.Wall));
+                    break;
+                case '$':
+                    tiles.add(new Tile(position, State.Box));
+                    break;
+                case '.':
+                    tiles.add(new Tile(position, State.Storage));
+                    break;
+                case '@':
+                    tiles.add(new Tile(position, State.Player));
+                    break;
+                case ' ':
+                    tiles.add(new Tile(position, State.Empty));
+                    break;
+            }
+        }
+        return tiles;
     }
 
     public static Map build(String fileMap) throws IOException {
 
-        Map map = new Map();
+        Map map = new Map(getMapWidth(fileMap), getMapHeight(fileMap));
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileMap))) {
-            StringBuilder sb = new StringBuilder();
             String line = br.readLine();
 
             while (line != null) {
-
-
+                ArrayList<Tile> tiles = toTiles(line);
+                for (Tile tile : tiles){
+                    map.getTiles()[tile.position().y][tile.position().x] = tile;
+                }
             }
-            String everything = sb.toString();
+
         }
         return map;
+    }
+
+    public static void displayMap(Map map){
+        for (int i = 0; i < map.getTiles().length; i++){
+            for (int j = 0; j < map.getTiles()[i].length; j++){
+                System.out.print(map.getTiles()[i][j].state());
+            }
+            System.out.println();
+        }
     }
 }
